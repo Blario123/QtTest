@@ -2,17 +2,17 @@
 #include "CarPanel.h"
 #include "main.h"
 
-Main *m;
 QMargins NoMargin(0, 0, 0, 0);
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
-    m = new Main();
-    m->setWindowTitle("QGraphicsItem & Slots and Signal Example");
-    m->setGeometry(0, 0, 415, 200);
-    m->setFixedSize(m->size());
-    m->setContentsMargins(0, 0, 0, 0);
-    m->show();
+	
+	Main m;
+    m.setWindowTitle("QGraphicsItem & Slots and Signal Example");
+    m.setGeometry(0, 0, 415, 200);
+    m.setFixedSize(m.size());
+    m.setContentsMargins(0, 0, 0, 0);
+    m.show();
     return QApplication::exec();
 }
 
@@ -40,10 +40,14 @@ Main::Main(QWidget *parent) : QWidget(parent), m_counter(0) {
 }
 
 void Main::mousePressEvent(QMouseEvent *event) {
-    qDebug() << "[INFO] " << "Previous radius is set to " << cp->radius() << ".";
+    qDebug() << "[INFO] " << "Previous radius is set to" << cp->radius() << ".";
     emit setTargetRadius(10);
     QWidget::mousePressEvent(event);
-    qDebug() << "[INFO] " << "New radius is set to " << cp->radius() << ".";
+    qDebug() << "[INFO] " << "New radius is set to" << cp->radius() << ".";
+	cp->update();
+	gl->update();
+	scene->update();
+	view->update();
 }
 
 Main::~Main() {

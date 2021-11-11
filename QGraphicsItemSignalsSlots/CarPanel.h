@@ -8,6 +8,7 @@
 #include <QGraphicsPathItem>
 #include <QObject>
 #include <QPainter>
+#include <QColor>
 #include <QRectF>
 #include <QStyleOptionGraphicsItem>
 
@@ -21,8 +22,8 @@ public:
     QRectF boundingRect() const override;
 private:
     int m_radius = 100;
-    QPainterPath *path;
-    Qt::GlobalColor color;
+    QPainterPath path;
+    QColor color;
 public slots:
     void setRadius(int radius);
 signals:

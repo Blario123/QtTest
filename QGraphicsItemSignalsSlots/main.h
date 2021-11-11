@@ -24,9 +24,8 @@ private:
     CarPanel *cp;
     QGridLayout *gl;
 
-    int m_counter{};
-    void radiusLoop();
-    void mousePressEvent(QMouseEvent *event);
+    int m_counter;
+    void mousePressEvent(QMouseEvent *event) override;
 
 public slots:
 

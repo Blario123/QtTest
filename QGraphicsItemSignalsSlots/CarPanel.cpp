@@ -4,18 +4,24 @@
 
 #include "CarPanel.h"
 
+int m_state;
+
 CarPanel::CarPanel(QGraphicsItem *item) : QGraphicsItem(item), QObject() {
-    path = new QPainterPath();
-    color = Qt::red;
-    qDebug() << "[INFO] " << "CarPanel Constructor called. Radius is set to " << m_radius << ".";
-    path->addEllipse(0, 0, this->m_radius, this->m_radius);
-    update();
+	color = Qt::red;
+	m_state = 0;
+	qDebug() << "[INFO] " << "CarPanel Constructor called. Radius is set to" << m_radius << ".";
 }
 
 void CarPanel::setRadius(int radius) {
-    this->m_radius = radius;
-    qDebug() << "[INFO] " << "Radius set to " << m_radius << ".";
-    color = Qt::blue;
+    m_radius = radius;
+    qDebug() << "[INFO] " << "Radius set to" << m_radius << ".";
+	if(m_state) {
+		color = Qt::red;
+		m_state = 0;
+	} else if (!m_state) {
+		color = Qt::blue;
+		m_state = 1;
+	}
     update();
 }
 
@@ -24,14 +30,14 @@ int CarPanel::radius() {
 }
 
 void CarPanel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+	path.clear();
+	path.addEllipse(0, 0, m_radius, m_radius);
     painter->setBrush(color);
-    painter->drawPath(*path);
+    painter->drawPath(path);
     qDebug() << "Painter Called";
 }
 
-CarPanel::~CarPanel() {
-    delete path;
-}
+CarPanel::~CarPanel() = default;
 
 QRectF CarPanel::boundingRect() const {
     return QRectF(-10, -10, 10, 10);
