@@ -14,6 +14,7 @@
 
 class CarPanel : public QObject, public QGraphicsItem {
     Q_OBJECT
+	Q_INTERFACES(QGraphicsItem)
 public:
     explicit CarPanel(QGraphicsItem *item = nullptr);
     ~CarPanel() override;
