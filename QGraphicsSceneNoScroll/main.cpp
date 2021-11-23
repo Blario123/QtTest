@@ -7,8 +7,8 @@ void setNoViewScrollbars(QGraphicsView *view);
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
     Main m;
-    setNoViewScrollbars(m.view);
-    m.setGeometry(0, 0, 1200, 600);
+//    setNoViewScrollbars(m.view);
+    m.setGeometry(0, 0, 500, 500);
     m.setWindowTitle("QGraphicsSceneNoScroll");
     m.setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
     m.show();
@@ -22,11 +22,12 @@ Main::Main(QWidget *parent) : QWidget(parent)    {
     auto *layout = new QGridLayout();
 
     scene->addItem(item);
-    scene->setSceneRect(0, 0, 1200, 600);
+//    scene->setSceneRect(0, 0, 1200, 600);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
     view->setScene(scene);
-    view->setCacheMode(QGraphicsView::CacheBackground);
+    view->setCacheMode(QGraphicsView::CacheNone);
     view->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
+	view->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
     layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(view, 0, 0);

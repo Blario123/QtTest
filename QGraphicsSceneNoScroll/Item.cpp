@@ -6,6 +6,7 @@
 
 Item::Item(QGraphicsItem *parent) {
     qDebug() << "Item called";
+	l = 500;
 }
 
 Item::~Item() = default;
@@ -16,7 +17,8 @@ QRectF Item::boundingRect() const {
 
 QPainterPath Item::shape() const {
     QPainterPath path;
-    path.addRoundedRect(0, 0, 500, 500, 50, 50);
+    path.addRoundedRect(0, 0, l, l, 50, 50);
+	path.translate(-boundingRect().width()/2, -boundingRect().height()/2);
     return path;
 }
 
