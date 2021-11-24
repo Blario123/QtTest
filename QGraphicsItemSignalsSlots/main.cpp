@@ -6,8 +6,7 @@ QMargins NoMargin(0, 0, 0, 0);
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
-	
-	Main m;
+    Main m;
     m.setWindowTitle("QGraphicsItem & Slots and Signal Example");
     m.setGeometry(0, 0, 415, 200);
     m.setFixedSize(m.size());

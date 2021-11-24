@@ -19,8 +19,8 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-set(CPPSOURCE main.cpp Item.cpp)
-set(HSOURCE main.h Item.h)
+set(CPPSOURCE main.cpp Item.cpp Indicator.cpp)
+set(HSOURCE main.h Item.h Indicator.h)
 
 add_executable(${CMAKE_PROJECT_NAME} ${CPPSOURCE} ${HSOURCE})
 

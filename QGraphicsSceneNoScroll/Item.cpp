@@ -5,7 +5,6 @@
 #include "Item.h"
 
 Item::Item(QGraphicsItem *parent) {
-    qDebug() << "Item called";
 	l = 500;
 }
 
