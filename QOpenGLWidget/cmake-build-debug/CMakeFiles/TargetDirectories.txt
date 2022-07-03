@@ -1,0 +1,4 @@
+/home/blair/Documents/Programming/QtTest/QOpenGLWidget/cmake-build-debug/CMakeFiles/QOpenGLWidget.dir
+/home/blair/Documents/Programming/QtTest/QOpenGLWidget/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/blair/Documents/Programming/QtTest/QOpenGLWidget/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/blair/Documents/Programming/QtTest/QOpenGLWidget/cmake-build-debug/CMakeFiles/QOpenGLWidget_autogen.dir
