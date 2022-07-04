@@ -1,3 +1,4 @@
+
 #include "OpenGLView.h"
 
 OpenGLView::OpenGLView(QOpenGLWidget *parent) : QOpenGLWidget(parent), shader(nullptr), frameCount(5000) {
@@ -7,9 +8,8 @@ OpenGLView::OpenGLView(QOpenGLWidget *parent) : QOpenGLWidget(parent), shader(nu
             QColor(0x0e, 0xee, 0xd1),
             QColor(0x06, 0x89, 0x18)
     };
-
-    QTimer timer;
-    timer.singleShot(1000, this, &OpenGLView::updateColor);
+    timer.start();
+    QTimer::singleShot(1000, this, &OpenGLView::updateColor);
 }
 
 QSize OpenGLView::sizeHint() const {
@@ -25,6 +25,8 @@ OpenGLView::~OpenGLView() {
 void OpenGLView::initializeGL() {
     initializeOpenGLFunctions();
 
+    glEnable(GL_DEPTH_TEST);
+
     shader = new QOpenGLShaderProgram;
 
     if(!shader->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shader.vs")) {
@@ -38,10 +40,12 @@ void OpenGLView::initializeGL() {
     }
 
     float vertices[] = {
-            0.8f,  0.8f, 0.0f,
-            0.8f, -0.8f, 0.0f,
-            -0.8f, -0.8f, 0.0f,
-            -0.8f,  0.8f, 0.0f
+            -0.5, 0.5, 0.0, // 0
+            0.5, 0.5, 0.0, // 1
+            0.5, -0.5, 0.0, // 2
+            -0.5, -0.5, 0.0, // 3
+            0.0, 0.0, 1.0, // 4
+
     };
 
     vertexBufferData.resize(2 * 4 * 3);
@@ -67,7 +71,11 @@ void OpenGLView::initializeGL() {
 
     uint indices[] = {
         0, 1, 3,
-        1, 2, 3
+        1, 2, 3,
+        0, 4, 1,
+        1,  4, 2,
+        2, 4, 3,
+        3, 4, 0
     };
 
     indexBuffer = QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
@@ -76,7 +84,7 @@ void OpenGLView::initializeGL() {
     indexBuffer.bind();
     indexBuffer.allocate(indices, sizeof(indices));
 
-    int stride = 6*sizeof(float);
+    int stride = 6 * sizeof(float);
 
     shader->enableAttributeArray(0);
     shader->setAttributeBuffer(0, GL_FLOAT, 0, 3, stride);
@@ -95,10 +103,31 @@ void OpenGLView::resizeGL(int w, int h) {
 
 void OpenGLView::paintGL() {
     glClearColor(0.1, 0.1, 0.2, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.0f);
+
+    shader->setUniformValue(shader->uniformLocation("projection"), QMatrix4x4(glm::value_ptr(projection)).transposed());
+
+    glm::mat4 view = glm::mat4(1.0f);
+
+    float radius = 5.0f;
+    auto camX = static_cast<float>(sin(timer.elapsed()) * radius);
+    auto camZ = static_cast<float>(cos(timer.elapsed()) * radius);
+
+    view = glm::lookAt(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+    shader->setUniformValue(shader->uniformLocation("view"), QMatrix4x4(glm::value_ptr(view)).transposed());
+
+    glm::mat4 model = glm::mat4(1.0f);
+    float angle = 20.0f;
+    model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+
+    shader->setUniformValue(shader->uniformLocation("model"), QMatrix4x4(glm::value_ptr(model)).transposed());
     shader->bind();
     vao.bind();
+
+
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     vao.release();
 
@@ -133,10 +162,10 @@ void OpenGLView::animateColorsTo(const std::vector<QColor> &toColor) {
 
 void OpenGLView::updateColor() {
     std::vector<QColor> to;
-    to.push_back(QColor(0x01, 0x04, 0xf6));
-    to.push_back(QColor(0xf6, 0x04, 0xf6));
-    to.push_back(QColor(0xf6, 0x04, 0x01));
-    to.push_back(QColor(0x01, 0xf6, 0xf6));
+    to.emplace_back(0x01, 0x04, 0xf6);
+    to.emplace_back(0xf6, 0x04, 0xf6);
+    to.emplace_back(0xf6, 0x04, 0x01);
+    to.emplace_back(0x01, 0xf6, 0xf6);
     this->animateColorsTo(to);
 }
 

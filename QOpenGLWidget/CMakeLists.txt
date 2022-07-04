@@ -20,6 +20,8 @@ find_package(Qt6 COMPONENTS
 	    OpenGLWidgets
         REQUIRED)
 
+find_package(glm REQUIRED)
+
 set(HSOURCE main.h OpenGLView.h)
 set(CPPSOURCE main.cpp OpenGLView.cpp)
 qt6_add_resources(RESOURCES resources.qrc)
