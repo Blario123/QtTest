@@ -15,4 +15,5 @@ int main(int argc, char* argv[]) {
 Main::Main(QWidget *parent) : QWidget(parent), gridLayout(new QGridLayout), glWidget(new OpenGLView) {
     gridLayout->addWidget(glWidget);
     setLayout(gridLayout);
+    setGeometry(0, 0, 800, 800);
 }

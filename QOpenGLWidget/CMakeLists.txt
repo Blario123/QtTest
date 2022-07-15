@@ -6,11 +6,9 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-if(WIN32)
-    set(CMAKE_PREFIX_PATH "C:/Qt/6.1.3/mingw81_64/lib/cmake")
-else()
-    set(CMAKE_PREFIX_PATH  ~/Qt/6.3.0/gcc_64/)
-endif()
+set(CMAKE_PREFIX_PATH "C:/Qt/6.1.3/mingw81_64/lib/cmake")
+
+include_directories(include)
 
 find_package(Qt6 COMPONENTS
         Core
@@ -22,7 +20,7 @@ find_package(Qt6 COMPONENTS
 
 find_package(glm REQUIRED)
 
-set(HSOURCE main.h OpenGLView.h)
+set(HSOURCE main.h OpenGLView.h OpenGLShader.h)
 set(CPPSOURCE main.cpp OpenGLView.cpp)
 qt6_add_resources(RESOURCES resources.qrc)
 

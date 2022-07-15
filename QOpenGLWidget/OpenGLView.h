@@ -1,44 +1,38 @@
 #ifndef OPENGLVIEW_H
 #define OPENGLVIEW_H
 
-#include <QTimer>
-#include <QElapsedTimer>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <QKeyEvent>
 #include <QOpenGLWidget>
+#include <QOpenGLFunctions>
+#include <QOpenGLFunctions_4_5_Core>
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLBuffer>
 #include <QOpenGLShaderProgram>
-#include <QOpenGLTexture>
-#include <QOpenGLFunctions>
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/type_ptr.hpp"
 
-class OpenGLView : public QOpenGLWidget, protected QOpenGLFunctions {
+class QKeyEvent;
+
+class OpenGLView : public QOpenGLWidget, protected QOpenGLFunctions_4_5_Core {
 Q_OBJECT
 public:
-    explicit OpenGLView(QOpenGLWidget *parent = nullptr);
+    explicit OpenGLView(QWidget *parent = nullptr);
     ~OpenGLView() override;
-    QSize sizeHint() const;
-    void animateColorsTo(const std::vector<QColor> &);\
-private:
-    QElapsedTimer timer;
-    void updateScene();
-    void animate();
-    QOpenGLShaderProgram *shader;
-    std::vector<QColor> vertexColours;
-    std::vector<float> vertexBufferData;
-    std::vector<QColor> toColors;
-    std::vector<QColor> fromColors;
-    uint frameCount;
-    QOpenGLBuffer vertexBufferObject;
-    QOpenGLBuffer indexBuffer;
-    QOpenGLVertexArrayObject vao;
-private slots:
-    void updateColor();
 protected:
     void initializeGL() override;
-    void resizeGL(int w, int h) override;
     void paintGL() override;
+    void resizeGL(int width, int height) override;
+    void keyPressEvent(QKeyEvent *event) override;
+private:
+    QOpenGLShaderProgram *prog;
+    GLuint vao;
+    GLuint vbo;
+    GLuint ebo;
+    std::vector<float> vectorVertex;
+    std::vector<unsigned int> vectorIndex;
+    int maxSize;
+    GLint modePolygon;
 };
 
 #endif // OPENGLVIEW_H
