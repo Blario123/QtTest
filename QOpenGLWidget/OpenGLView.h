@@ -18,7 +18,7 @@ class OpenGLView : public QOpenGLWidget, protected QOpenGLFunctions_4_5_Core {
 Q_OBJECT
 public:
     explicit OpenGLView(QWidget *parent = nullptr);
-    ~OpenGLView() override;
+    ~OpenGLView() override = default;
 protected:
     void initializeGL() override;
     void paintGL() override;
@@ -31,7 +31,6 @@ private:
     GLuint ebo;
     std::vector<float> vectorVertex;
     std::vector<unsigned int> vectorIndex;
-    int maxSize;
     GLint modePolygon;
 };
 
